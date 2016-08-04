@@ -1217,6 +1217,7 @@ static void cfg_defaults(struct ldap_config *cfg)
   cfg->ssl = SSL_OFF;
 #endif /* LDAP_OPT_X_TLS */
   cfg->pagesize = 0;
+  cfg->sid_conversion_offset = 0;
   cfg->nss_initgroups_ignoreusers = NULL;
   cfg->nss_min_uid = 0;
   cfg->nss_nested_groups = 0;
@@ -1544,6 +1545,11 @@ static void cfg_read(const char *filename, struct ldap_config *cfg)
       cfg->pagesize = get_int(filename, lnr, keyword, &line);
       get_eol(filename, lnr, keyword, &line);
     }
+    else if (strcasecmp(keyword, "sid_conversion_offset") == 0)
+    {
+          cfg->sid_conversion_offset = get_int(filename, lnr, keyword, &line);
+          get_eol(filename, lnr, keyword, &line);
+    }
     else if (strcasecmp(keyword, "nss_initgroups_ignoreusers") == 0)
     {
       handle_nss_initgroups_ignoreusers(filename, lnr, keyword, line,
@@ -1816,6 +1822,7 @@ static void cfg_dump(void)
   LOG_LDAP_OPT_STRING("tls_key", LDAP_OPT_X_TLS_KEYFILE);
 #endif /* LDAP_OPT_X_TLS */
   log_log(LOG_DEBUG, "CFG: pagesize %d", nslcd_cfg->pagesize);
+  log_log(LOG_DEBUG, "CFG: sid_conversion_offset %d", nslcd_cfg->sid_conversion_offset);
   if (nslcd_cfg->nss_initgroups_ignoreusers != NULL)
   {
     /* allocate memory for a comma-separated list */

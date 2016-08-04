@@ -105,10 +105,12 @@ static int mkfilter_passwd_byuid(uid_t uid, char *buffer, size_t buflen)
 {
   if (uidSid != NULL)
   {
-    return mysnprintf(buffer, buflen, "(&%s(%s=%s\\%02x\\%02x\\%02x\\%02x))",
-                      passwd_filter, attmap_passwd_uidNumber, uidSid,
-                      (int)(uid & 0xff), (int)((uid >> 8) & 0xff),
-                      (int)((uid >> 16) & 0xff), (int)((uid >> 24) & 0xff));
+	uid-=nslcd_cfg->sid_conversion_offset;
+	return mysnprintf(buffer, buflen, "(&%s(%s=%s\\%02x\\%02x\\%02x\\%02x))",
+	                  passwd_filter, attmap_passwd_uidNumber, uidSid,
+	                  (int)(uid & 0xff), (int)((uid >> 8) & 0xff),
+	                  (int)((uid >> 16) & 0xff), (int)((uid >> 24) & 0xff));
+
   }
   else
   {

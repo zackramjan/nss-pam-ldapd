@@ -110,16 +110,17 @@ static int mkfilter_group_bygid(gid_t gid, char *buffer, size_t buflen)
   /* if searching for a Windows domain SID */
   if (gidSid != NULL)
   {
-    /* the given gid is a BUILTIN gid, the SID prefix is not the domain SID */
-    if ((gid >= min_builtin_rid) && (gid <= max_builtin_rid))
-      return mysnprintf(buffer, buflen, "(&%s(%s=%s\\%02x\\%02x\\%02x\\%02x))",
-                        group_filter, attmap_group_gidNumber, builtinSid,
-                        (int)(gid & 0xff), (int)((gid >> 8) & 0xff),
-                        (int)((gid >> 16) & 0xff), (int)((gid >> 24) & 0xff));
-    return mysnprintf(buffer, buflen, "(&%s(%s=%s\\%02x\\%02x\\%02x\\%02x))",
-                      group_filter, attmap_group_gidNumber, gidSid,
-                      (int)(gid & 0xff), (int)((gid >> 8) & 0xff),
-                      (int)((gid >> 16) & 0xff), (int)((gid >> 24) & 0xff));
+	  gid-=nslcd_cfg->sid_conversion_offset;
+	      /* the given gid is a BUILTIN gid, the SID prefix is not the domain SID */
+	      if ((gid >= min_builtin_rid) && (gid <= max_builtin_rid))
+	        return mysnprintf(buffer, buflen, "(&%s(%s=%s\\%02x\\%02x\\%02x\\%02x))",
+	                          group_filter, attmap_group_gidNumber, builtinSid,
+	                          (int)(gid & 0xff), (int)((gid >> 8) & 0xff),
+	                          (int)((gid >> 16) & 0xff), (int)((gid >> 24) & 0xff));
+	      return mysnprintf(buffer, buflen, "(&%s(%s=%s\\%02x\\%02x\\%02x\\%02x))",
+	                        group_filter, attmap_group_gidNumber, gidSid,
+	                        (int)(gid & 0xff), (int)((gid >> 8) & 0xff),
+	                        (int)((gid >> 16) & 0xff), (int)((gid >> 24) & 0xff));
   }
   else
   {

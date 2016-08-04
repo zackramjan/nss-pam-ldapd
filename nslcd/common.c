@@ -332,10 +332,16 @@ unsigned long int binsid2id(const char *binsid)
   int i;
   /* find the position of the last security id */
   i = 2 + 6 + ((((unsigned int)binsid[1]) & 0xff) - 1) * 4;
-  return (((unsigned long int)binsid[i]) & 0xff) |
-         ((((unsigned long int)binsid[i + 1]) & 0xff) << 8) |
-         ((((unsigned long int)binsid[i + 2]) & 0xff) << 16) |
-         ((((unsigned long int)binsid[i + 3]) & 0xff) << 24);
+
+  //ZACK RAMJAN return sid + offset
+  unsigned long int retID =  (((unsigned long int)binsid[i]) & 0xff) |
+   //ZR return  (((unsigned long int)binsid[i]) & 0xff) |
+          ((((unsigned long int)binsid[i + 1]) & 0xff) << 8) |
+          ((((unsigned long int)binsid[i + 2]) & 0xff) << 16) |
+          ((((unsigned long int)binsid[i + 3]) & 0xff) << 24);
+         retID+= nslcd_cfg->sid_conversion_offset;
+         //retID+=1351800000;
+         return retID;
 }
 
 #ifdef WANT_STRTOUI

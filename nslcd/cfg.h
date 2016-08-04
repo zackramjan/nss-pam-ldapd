@@ -133,6 +133,7 @@ struct ldap_config {
   char *pam_authz_searches[NSS_LDAP_CONFIG_MAX_AUTHZ_SEARCHES]; /* the searches that should be performed to do autorisation checks */
   char *pam_password_prohibit_message;   /* whether password changing should be denied and user prompted with this message */
   char reconnect_invalidate[LM_NONE];  /* set to 1 if the corresponding map should be invalidated */
+  int sid_conversion_offset; /*add this number to the resulting uid/gid after sid conversion */
 
   time_t cache_dn2uid_positive;
   time_t cache_dn2uid_negative;
