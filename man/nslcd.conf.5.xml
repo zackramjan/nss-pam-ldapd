@@ -696,6 +696,18 @@
       </para>
      </listitem>
     </varlistentry>
+    
+    <varlistentry id="sid_conversion_offset"> <!-- since 0.3 -->
+     <term><option>sid_conversion_offset</option> <replaceable>NUMBER</replaceable></term>
+     <listitem>
+      <para>
+       Set this to an integer that will added to an SID-derived number. When
+       generating UID and GIDs from Active Directory SIDs, only the last group of digits 
+       are used. This may be useful when running in an environment where nslcd is not the only 
+       tool being used to integrate with AD.
+      </para>
+     </listitem>
+    </varlistentry>
 
     <varlistentry id="nss_initgroups_ignoreusers"> <!-- since 0.7.4 -->
      <term><option>nss_initgroups_ignoreusers</option> user1,user2,...</term>
